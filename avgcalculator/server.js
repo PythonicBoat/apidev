@@ -38,20 +38,20 @@ app.get("/numbers/:numberId", async (req, res) => {
 const { numberId } = req.params;
 
 if (!QUALIFIED_IDS.includes(numberId)) {
-return res.status(400).json({ error: "Invalid number ID" });
+    return res.status(400).json({ error: "Invalid number ID" });
 }
 
 const newNumbers = await fetchNumbers(numberId);
 const windowPrevState = [...slidingWindow];
 
 const uniqueNewNumbers = newNumbers.filter(
-(num) => !slidingWindow.includes(num)
+    (num) => !slidingWindow.includes(num)
 );
 
 slidingWindow.push(...uniqueNewNumbers);
 
 if (slidingWindow.length > WINDOW_SIZE) {
-slidingWindow.splice(0, slidingWindow.length - WINDOW_SIZE);
+    slidingWindow.splice(0, slidingWindow.length - WINDOW_SIZE);
 }
 
 const avg =
@@ -60,15 +60,15 @@ slidingWindow.length > 0
 : null;
 
 const response = {
-windowPrevState: windowPrevState,
-windowCurrState: [...slidingWindow],
-numbers: newNumbers,
-avg: avg
+    windowPrevState: windowPrevState,
+    windowCurrState: [...slidingWindow],
+    numbers: newNumbers,
+    avg: avg
 };
 
 res.status(200).json(response);
 });
 
 app.listen(PORT, () => {
-console.log(`Average Calculator Microservice running on https://localhost:${PORT}`);
+    console.log(`Average Calculator Microservice running on https://localhost:${PORT}`);
 });
